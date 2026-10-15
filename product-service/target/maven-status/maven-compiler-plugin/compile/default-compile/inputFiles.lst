@@ -1,0 +1,16 @@
+D:\java\JewelryShop\product-service\src\main\java\com\example\spring_crud_demo\config\NotFoundApiResponse.java
+D:\java\JewelryShop\product-service\src\main\java\com\example\spring_crud_demo\config\OpenApiConfig.java
+D:\java\JewelryShop\product-service\src\main\java\com\example\spring_crud_demo\config\StandardApiResponses.java
+D:\java\JewelryShop\product-service\src\main\java\com\example\spring_crud_demo\controller\ProductController.java
+D:\java\JewelryShop\product-service\src\main\java\com\example\spring_crud_demo\controller\ProductV2Controller.java
+D:\java\JewelryShop\product-service\src\main\java\com\example\spring_crud_demo\dto\request\CreateProductRequest.java
+D:\java\JewelryShop\product-service\src\main\java\com\example\spring_crud_demo\dto\request\ProductPageRequest.java
+D:\java\JewelryShop\product-service\src\main\java\com\example\spring_crud_demo\dto\request\UpdateProductRequest.java
+D:\java\JewelryShop\product-service\src\main\java\com\example\spring_crud_demo\dto\response\ProductResponse.java
+D:\java\JewelryShop\product-service\src\main\java\com\example\spring_crud_demo\entity\Product.java
+D:\java\JewelryShop\product-service\src\main\java\com\example\spring_crud_demo\exception\ApiErrorResponse.java
+D:\java\JewelryShop\product-service\src\main\java\com\example\spring_crud_demo\exception\GlobalExceptionHandler.java
+D:\java\JewelryShop\product-service\src\main\java\com\example\spring_crud_demo\mapper\ProductMapper.java
+D:\java\JewelryShop\product-service\src\main\java\com\example\spring_crud_demo\repository\ProductRepository.java
+D:\java\JewelryShop\product-service\src\main\java\com\example\spring_crud_demo\service\ProductService.java
+D:\java\JewelryShop\product-service\src\main\java\com\example\spring_crud_demo\SpringCrudDemoApplication.java
