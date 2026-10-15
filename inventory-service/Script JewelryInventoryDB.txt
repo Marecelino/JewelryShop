@@ -1,0 +1,290 @@
+USE JewelryInventoryDemo;
+GO
+
+/* =========================================================
+   STEP 1: DROP EXISTING DEMO TABLE
+   WARNING: This deletes existing inventory_items data.
+   ========================================================= */
+
+DROP TABLE IF EXISTS dbo.inventory_items;
+GO
+
+/* =========================================================
+   STEP 2: CREATE INVENTORY ITEMS TABLE
+   One row represents one identifiable physical item.
+   ========================================================= */
+
+CREATE TABLE dbo.inventory_items
+(
+    inventory_item_id BIGINT IDENTITY(1,1) NOT NULL,
+    product_id INT NOT NULL,
+
+    barcode VARCHAR(50) NOT NULL,
+    serial_number VARCHAR(100) NULL,
+
+    actual_weight_grams DECIMAL(10,3) NULL,
+    actual_gold_purity_percent DECIMAL(5,2) NULL,
+    certificate_number VARCHAR(100) NULL,
+
+    location_code VARCHAR(50) NULL,
+
+    status VARCHAR(20) NOT NULL
+        CONSTRAINT DF_inventory_items_status
+        DEFAULT ('AVAILABLE'),
+
+    reservation_reference VARCHAR(100) NULL,
+    reserved_until DATETIME2(3) NULL,
+
+    created_at DATETIME2(3) NOT NULL
+        CONSTRAINT DF_inventory_items_created_at
+        DEFAULT (SYSUTCDATETIME()),
+
+    updated_at DATETIME2(3) NOT NULL
+        CONSTRAINT DF_inventory_items_updated_at
+        DEFAULT (SYSUTCDATETIME()),
+
+    row_version ROWVERSION NOT NULL,
+
+    /* Primary key */
+    CONSTRAINT PK_inventory_items
+        PRIMARY KEY (inventory_item_id),
+
+    /* Each barcode identifies one physical item */
+    CONSTRAINT UQ_inventory_items_barcode
+        UNIQUE (barcode),
+
+    /* A valid product reference must be positive */
+    CONSTRAINT CK_inventory_items_product_id
+        CHECK (product_id > 0),
+
+    /* Weight must be positive when supplied */
+    CONSTRAINT CK_inventory_items_weight
+        CHECK (
+            actual_weight_grams IS NULL
+            OR actual_weight_grams > 0
+        ),
+
+    /* Gold purity is a percentage between 0 and 100 */
+    CONSTRAINT CK_inventory_items_gold_purity
+        CHECK (
+            actual_gold_purity_percent IS NULL
+            OR actual_gold_purity_percent
+               BETWEEN 0.01 AND 100.00
+        ),
+
+    /* Only the supported inventory statuses are allowed */
+    CONSTRAINT CK_inventory_items_status
+        CHECK (
+            status IN (
+                'AVAILABLE',
+                'RESERVED',
+                'SOLD',
+                'DAMAGED'
+            )
+        ),
+
+    /* Reservation fields must agree with the item status */
+    CONSTRAINT CK_inventory_items_reservation
+        CHECK (
+            (
+                status = 'RESERVED'
+                AND reservation_reference IS NOT NULL
+                AND reserved_until IS NOT NULL
+            )
+            OR
+            (
+                status <> 'RESERVED'
+                AND reservation_reference IS NULL
+                AND reserved_until IS NULL
+            )
+        )
+);
+GO
+
+/* =========================================================
+   STEP 3: CREATE INDEXES
+   ========================================================= */
+
+-- Serial numbers are unique when provided.
+-- Multiple rows may have serial_number = NULL.
+CREATE UNIQUE INDEX UX_inventory_items_serial_number
+    ON dbo.inventory_items(serial_number)
+    WHERE serial_number IS NOT NULL;
+GO
+
+-- Find inventory items belonging to a product and status.
+CREATE INDEX IX_inventory_items_product_status
+    ON dbo.inventory_items(product_id, status);
+GO
+
+-- Find reservations by expiration time.
+CREATE INDEX IX_inventory_items_reserved_until
+    ON dbo.inventory_items(reserved_until)
+    WHERE status = 'RESERVED';
+GO
+
+/* =========================================================
+   STEP 4: INSERT 8 DEMONSTRATION RECORDS
+   created_at, updated_at and row_version are generated
+   by SQL Server; do not insert values into row_version.
+   ========================================================= */
+
+INSERT INTO dbo.inventory_items
+(
+    product_id,
+    barcode,
+    serial_number,
+    actual_weight_grams,
+    actual_gold_purity_percent,
+    certificate_number,
+    location_code,
+    status,
+    reservation_reference,
+    reserved_until
+)
+VALUES
+-- 1. 18K gold ring, available in showroom
+(
+    1,
+    'JWL-000001',
+    'RG-2026-0001',
+    3.080,
+    75.00,
+    NULL,
+    'SHOWROOM-A01',
+    'AVAILABLE',
+    NULL,
+    NULL
+),
+
+-- 2. Another physical 18K gold ring, stored in safe
+(
+    1,
+    'JWL-000002',
+    'RG-2026-0002',
+    3.120,
+    75.00,
+    NULL,
+    'SAFE-A01',
+    'AVAILABLE',
+    NULL,
+    NULL
+),
+
+-- 3. White-gold pearl earrings
+-- Purity is NULL because actual purity has not been established.
+(
+    3,
+    'JWL-000003',
+    'PE-2026-0001',
+    4.250,
+    NULL,
+    NULL,
+    'SHOWROOM-A02',
+    'AVAILABLE',
+    NULL,
+    NULL
+),
+
+-- 4. Platinum diamond ring with a clearly fictional demo certificate
+(
+    4,
+    'JWL-000004',
+    'PT-2026-0001',
+    2.850,
+    NULL,
+    'DEMO-CERT-DIA-0001',
+    'SHOWROOM-A03',
+    'AVAILABLE',
+    NULL,
+    NULL
+),
+
+-- 5. Platinum diamond ring temporarily reserved
+(
+    4,
+    'JWL-000005',
+    'PT-2026-0002',
+    2.910,
+    NULL,
+    'DEMO-CERT-DIA-0002',
+    'SHOWROOM-A03',
+    'RESERVED',
+    'ORD-DEMO-1001',
+    DATEADD(MINUTE, 15, SYSUTCDATETIME())
+),
+
+-- 6. Platinum diamond ring already sold
+(
+    4,
+    'JWL-000006',
+    'PT-2026-0003',
+    2.900,
+    NULL,
+    'DEMO-CERT-DIA-0003',
+    NULL,
+    'SOLD',
+    NULL,
+    NULL
+),
+
+-- 7. Pearl earrings temporarily marked as damaged
+(
+    3,
+    'JWL-000007',
+    'PE-2026-0002',
+    4.300,
+    NULL,
+    NULL,
+    'REPAIR-01',
+    'DAMAGED',
+    NULL,
+    NULL
+),
+
+-- 8. 18K gold ring without a separately assigned serial number
+(
+    1,
+    'JWL-000008',
+    NULL,
+    3.065,
+    75.00,
+    NULL,
+    'SAFE-B01',
+    'AVAILABLE',
+    NULL,
+    NULL
+);
+GO
+
+/* =========================================================
+   STEP 5: VERIFY DATA
+   ========================================================= */
+
+SELECT
+    inventory_item_id,
+    product_id,
+    barcode,
+    serial_number,
+    actual_weight_grams,
+    actual_gold_purity_percent,
+    certificate_number,
+    location_code,
+    status,
+    reservation_reference,
+    reserved_until,
+    created_at,
+    updated_at,
+    row_version
+FROM dbo.inventory_items
+ORDER BY inventory_item_id;
+GO
+
+/* Verify counts by status */
+SELECT
+    status,
+    COUNT(*) AS item_count
+FROM dbo.inventory_items
+GROUP BY status
+ORDER BY status;
+GO
