@@ -1,0 +1,81 @@
+# ==============================
+# Spring Initializr
+# ==============================
+HELP.md
+
+# ==============================
+# Maven / Java
+# ==============================
+target/
+**/target/
+*.class
+.mvn/timing.properties
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+
+# Maven Wrapper
+# Keep ignored only if your wrapper scripts can bootstrap Maven
+.mvn/wrapper/maven-wrapper.jar
+
+# ==============================
+# IDE
+# ==============================
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+.classpath
+.project
+.factorypath
+.settings/
+.springBeans
+.sts4-cache/
+.apt_generated
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# Build tools
+build/
+
+# ==============================
+# Logs / temporary files
+# ==============================
+*.log
+logs/
+tmp/
+temp/
+
+# ==============================
+# Operating system
+# ==============================
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ==============================
+# Local environment / secrets
+# ==============================
+.env
+.env.*
+!.env.example
+
+# Local Spring configuration
+src/main/resources/application-local.properties
+src/main/resources/application-secrets.properties
+src/test/resources/application-local.properties
+
+# Certificates / private keys
+*.pem
+*.key
+*.p12
