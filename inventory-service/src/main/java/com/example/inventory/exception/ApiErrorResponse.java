@@ -1,4 +1,4 @@
-/*
+
 package com.example.inventory.exception;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -72,4 +72,4 @@ public class ApiErrorResponse {
     public Map<String, String> getValidationErrors() {
         return validationErrors;
     }
-}*/
+}

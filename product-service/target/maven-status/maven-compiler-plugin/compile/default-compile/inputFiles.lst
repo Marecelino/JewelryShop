@@ -1,11 +1,15 @@
+D:\java\JewelryShop\product-service\src\main\java\com\example\product\client\InventoryClient.java
 D:\java\JewelryShop\product-service\src\main\java\com\example\product\config\NotFoundApiResponse.java
 D:\java\JewelryShop\product-service\src\main\java\com\example\product\config\OpenApiConfig.java
+D:\java\JewelryShop\product-service\src\main\java\com\example\product\config\RestClientConfig.java
 D:\java\JewelryShop\product-service\src\main\java\com\example\product\config\StandardApiResponses.java
 D:\java\JewelryShop\product-service\src\main\java\com\example\product\controller\ProductController.java
 D:\java\JewelryShop\product-service\src\main\java\com\example\product\controller\ProductV2Controller.java
+D:\java\JewelryShop\product-service\src\main\java\com\example\product\dto\external\InventorySummaryDto.java
 D:\java\JewelryShop\product-service\src\main\java\com\example\product\dto\request\CreateProductRequest.java
 D:\java\JewelryShop\product-service\src\main\java\com\example\product\dto\request\ProductPageRequest.java
 D:\java\JewelryShop\product-service\src\main\java\com\example\product\dto\request\UpdateProductRequest.java
+D:\java\JewelryShop\product-service\src\main\java\com\example\product\dto\response\InventorySummary.java
 D:\java\JewelryShop\product-service\src\main\java\com\example\product\dto\response\ProductResponse.java
 D:\java\JewelryShop\product-service\src\main\java\com\example\product\entity\Product.java
 D:\java\JewelryShop\product-service\src\main\java\com\example\product\exception\ApiErrorResponse.java

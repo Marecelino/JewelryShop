@@ -3,7 +3,6 @@ package com.example.product.entity;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import jakarta.validation.constraints.PositiveOrZero;
 
 @Entity
 @Table(name = "Products", schema = "dbo")
@@ -26,13 +25,8 @@ public class Product {
     @Column(name = "Gemstone", length = 50)
     private String gemstone;
 
-    @PositiveOrZero(message = "Price must be >=0 ")
     @Column(name = "Price", nullable = false, precision = 18, scale = 2)
     private BigDecimal price;
-
-    @PositiveOrZero(message = " Stock quantity mustbe >= 0")
-    @Column(name = "StockQuantity", nullable = false)
-    private Integer stockQuantity;
 
     @Column(name = "Description", length = 255)
     private String description;
@@ -92,14 +86,6 @@ public class Product {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
-    }
-
-    public Integer getStockQuantity() {
-        return stockQuantity;
-    }
-
-    public void setStockQuantity(Integer stockQuantity) {
-        this.stockQuantity = stockQuantity;
     }
 
     public String getDescription() {

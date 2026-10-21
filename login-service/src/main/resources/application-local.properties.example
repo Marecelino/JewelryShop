@@ -1,0 +1,13 @@
+# Copy this file to application-local.properties and fill in real values.
+# application-local.properties is gitignored — safe to store real credentials here.
+# Activate this profile by adding -Dspring.profiles.active=local to your run config,
+# or set SPRING_PROFILES_ACTIVE=local as an environment variable.
+
+# SQL Server — local dev credentials
+spring.datasource.url=jdbc:sqlserver://Marecelino:1433;databaseName=JewelryLoginDemo;encrypt=true;trustServerCertificate=true
+spring.datasource.username=sa
+spring.datasource.password=REPLACE_WITH_REAL_PASSWORD
+
+# JWT RSA keys (paths are already set in application.properties; override only if needed)
+# app.jwt.private-key-location=file:./keys/private_key.pem
+# app.jwt.public-key-location=file:./keys/public_key.pem

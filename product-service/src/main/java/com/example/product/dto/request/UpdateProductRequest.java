@@ -1,36 +1,40 @@
 package com.example.product.dto.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
 
 import java.math.BigDecimal;
 
+@Schema(description = "Request body to update an existing product")
 public class UpdateProductRequest {
 
     @NotBlank(message = "Product name is required")
+    @Schema(description = "Product name", example = "Classic Gold Ring")
     private String productName;
 
     @NotBlank(message = "Category is required")
+    @Schema(description = "Product category", example = "Rings")
     private String category;
 
     @NotBlank(message = "Material is required")
+    @Schema(description = "Primary material", example = "18K Gold")
     private String material;
 
+    @Schema(description = "Gemstone (optional)", example = "Diamond")
     private String gemstone;
 
     @NotNull(message = "Price is required")
     @DecimalMin(value = "0.0", message = "Price must be zero or greater")
+    @Schema(description = "Price in VND", example = "5500000")
     private BigDecimal price;
 
-    @NotNull(message = "Stock quantity is required")
-    @PositiveOrZero(message = "Stock quantity must be zero or greater")
-    private Integer stockQuantity;
-
+    @Schema(description = "Product description (optional)")
     private String description;
 
     @NotNull(message = "Active status is required")
+    @Schema(description = "Whether the product is active/available for sale", example = "true")
     private Boolean active;
 
     public UpdateProductRequest() {
@@ -74,14 +78,6 @@ public class UpdateProductRequest {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
-    }
-
-    public Integer getStockQuantity() {
-        return stockQuantity;
-    }
-
-    public void setStockQuantity(Integer stockQuantity) {
-        this.stockQuantity = stockQuantity;
     }
 
     public String getDescription() {

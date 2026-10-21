@@ -1,7 +1,7 @@
-/*
+
 package com.example.inventory.config;
 
-import com.example.product.exception.ApiErrorResponse;
+import com.example.inventory.exception.ApiErrorResponse;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -21,4 +21,3 @@ import java.lang.annotation.*;
 )
 public @interface NotFoundApiResponse {
 }
-*/

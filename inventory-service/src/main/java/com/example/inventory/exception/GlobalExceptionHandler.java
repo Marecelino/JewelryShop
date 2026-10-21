@@ -1,4 +1,3 @@
-/*
 package com.example.inventory.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -95,4 +94,24 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.badRequest().body(response);
     }
-}*/
+
+    // Handle barcode / serial number conflicts → 409 Conflict
+    @ExceptionHandler(InventoryItemConflictException.class)
+    public ResponseEntity<ApiErrorResponse> handleInventoryItemConflict(
+            InventoryItemConflictException ex,
+            HttpServletRequest request) {
+
+        ApiErrorResponse response = new ApiErrorResponse(
+                Instant.now(),
+                HttpStatus.CONFLICT.value(),
+                HttpStatus.CONFLICT.getReasonPhrase(),
+                ex.getMessage(),
+                request.getRequestURI(),
+                Map.of()
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(response);
+    }
+}
