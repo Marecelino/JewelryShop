@@ -10,7 +10,12 @@ import java.math.BigDecimal;
 import java.time.Instant;
 
 @Entity
-@Table(name = "inventory_items" , schema = "dbo")
+@Table(name = "inventory_items" , schema = "dbo", indexes = {
+    // ⚡ Bolt: Adding indexes for high-frequency lookup queries to improve search performance.
+    // Impact: Avoids full table scans during inventory item lookups and aggregations. Expected to significantly reduce query time (e.g. from O(n) to O(log n)) when the table grows large.
+    @Index(name = "idx_inventory_item_product_id", columnList = "product_id"),
+    @Index(name = "idx_inventory_item_barcode", columnList = "barcode")
+})
 public class InventoryItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
