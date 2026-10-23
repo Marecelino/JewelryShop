@@ -21,7 +21,6 @@ import java.util.Locale;
 @Service
 public class AuthService {
 
-
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
@@ -102,12 +101,20 @@ public class AuthService {
                         )
                 );
 
+        // ⚡ Bolt: Early return for disabled accounts to avoid expensive BCrypt hashing
+        // Expected impact: Saves ~100-300ms (cost of BCrypt) when a disabled user attempts login
+        if (!user.isEnabled()) {
+            throw new InvalidCredentialsException(
+                    "Invalid email or password"
+            );
+        }
+
         boolean matches = passwordEncoder.matches(
                 request.getPassword(),
                 user.getPasswordHash()
         );
 
-        if (!user.isEnabled() || !matches) {
+        if (!matches) {
             throw new InvalidCredentialsException(
                     "Invalid email or password"
             );
