@@ -16,7 +16,7 @@ public class ProductClient {
 
     public boolean existsById(Integer productId) {
         try {
-            productRestClient.get()
+            productRestClient.head()
                     .uri("/api/v1/products/{id}", productId)
                     .retrieve()
                     .toBodilessEntity();

@@ -53,6 +53,24 @@ public class ProductController {
     }
 
     // -------------------------------------------------------------------------
+    // HEAD /api/v1/products/{id}
+    // -------------------------------------------------------------------------
+    @RequestMapping(value = "/{id}", method = RequestMethod.HEAD)
+    @Operation(
+            summary = "Check if product exists",
+            description = "Checks if a product exists by ID without fetching the full product data."
+    )
+    @ApiResponse(responseCode = "200", description = "Product exists")
+    @ApiResponse(responseCode = "404", description = "Product not found")
+    public ResponseEntity<Void> checkProductExists(@PathVariable Integer id) {
+        if (productService.existsById(id)) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // -------------------------------------------------------------------------
     // GET /api/v1/products/{id}
     // -------------------------------------------------------------------------
     @GetMapping("/{id}")

@@ -1,0 +1,3 @@
+## 2024-05-13 - [Eliminate N+1 Inter-Service Calls using HTTP HEAD]
+**Learning:** Found a severe cyclic network bottleneck in the microservice architecture: The inventory service verified product existence using a standard `GET` endpoint on the product service. However, this `GET` endpoint also requested inventory summaries in order to enrich its response, creating a recursive, bloated network fetch operation that pulled full JSON payloads only to discard them via `toBodilessEntity()`.
+**Action:** Always check the internal behavior of cross-service REST calls. When only checking existence across services, implement and consume lightweight HTTP `HEAD` endpoints to bypass heavy data aggregation and parsing logic on the target service.
