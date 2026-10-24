@@ -65,6 +65,12 @@ public class ProductService {
     // READ
     // -------------------------------------------------------------------------
 
+    /** Kiểm tra sản phẩm có tồn tại hay không. */
+    @Transactional(readOnly = true)
+    public boolean existsById(Integer productId) {
+        return productRepository.existsById(productId);
+    }
+
     /** Lấy toàn bộ sản phẩm, bổ sung thông tin tồn kho bằng một lần gọi batch. */
     @Transactional(readOnly = true)
     public List<ProductResponse> getAllProducts() {
