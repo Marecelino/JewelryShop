@@ -9,10 +9,19 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface InventoryItemRepository
         extends JpaRepository<InventoryItem, Long> {
+
+    @Query(value = """
+        SELECT TOP 1 inventory_item_id
+        FROM dbo.inventory_items WITH (UPDLOCK, READPAST, ROWLOCK)
+        WHERE product_id = :productId AND status = 'AVAILABLE'
+        ORDER BY inventory_item_id ASC
+        """, nativeQuery = true)
+    Optional<Long> findAvailableItemWithLock(@Param("productId") Integer productId);
 
     boolean existsByBarcode(String barcode);
 

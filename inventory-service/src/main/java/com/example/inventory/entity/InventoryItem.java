@@ -65,8 +65,7 @@ public class InventoryItem {
             columnDefinition = "datetime2(3)")
     private Instant updatedAt;
 
-    //@Column(name = "row_version", columnDefinition = "timestamp not null")
-    //private Object rowVersion;
+
     @Column(
             name = "row_version",
             columnDefinition = "rowversion",

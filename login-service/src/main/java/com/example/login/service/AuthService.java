@@ -65,7 +65,7 @@ public class AuthService {
         user.setRole("USER");
         user.setEnabled(true);
 
-        // 5. Lưu vào database, bắt lỗi unique constraint trong tình huống race condition
+        //slf4j
         try {
             User savedUser = userRepository.saveAndFlush(user);
             return userMapper.toResponse(savedUser);
@@ -138,7 +138,7 @@ public class AuthService {
         return userMapper.toResponse(user);
     }
 
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     public UserResponse getCurrentUser(Jwt jwt) {
         if (jwt == null) {
             throw new InvalidCredentialsException("Unauthorized");

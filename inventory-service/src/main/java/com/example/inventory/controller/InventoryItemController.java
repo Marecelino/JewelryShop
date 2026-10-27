@@ -28,12 +28,6 @@ public class InventoryItemController {
         this.inventoryItemService = inventoryItemService;
     }
 
-    /*    @GetMapping
-        public ResponseEntity<List<InventoryItemResponse>> getAllItems() {
-            return ResponseEntity.ok(
-                    inventoryItemService.getAllItems()
-            );
-        }*/
     @GetMapping
     public PagedModel<InventoryItemResponse> getAllItems(
             @Valid @ModelAttribute PageQueryRequest request

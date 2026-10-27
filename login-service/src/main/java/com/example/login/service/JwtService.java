@@ -30,7 +30,7 @@ public class JwtService {
         Instant now = Instant.now();
         Instant expiresAt = now.plus(jwtProperties.getAccessTokenTtl());
 
-        JwtClaimsSet claims = JwtClaimsSet.builder()
+        JwtClaimsSet claims = JwtClaimsSet.builder()// claims create payload body
                 .issuer(jwtProperties.getIssuer())
                 .audience(List.of(jwtProperties.getAudience()))
                 .issuedAt(now)
@@ -46,14 +46,14 @@ public class JwtService {
                 .build();
         String tokenValue = jwtEncoder.encode(JwtEncoderParameters.from(header, claims)).getTokenValue();
 
-        UserSummary summary = new UserSummary(
-                user.getId(),
-                user.getUsername(),
-                user.getEmail(),
-                user.getRole(),
-                user.isEnabled()
-        );
+//        UserSummary summary = new UserSummary(
+//                user.getId(),
+//                user.getUsername(),
+//                user.getEmail(),
+//                user.getRole(),
+//                user.isEnabled()
+//        );
 
-        return new LoginResponse(tokenValue, "Bearer", expiresAt, summary);
+        return new LoginResponse(tokenValue, "Bearer", expiresAt);
     }
 }

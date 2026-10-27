@@ -16,14 +16,14 @@ public class LoginResponse {
     @Schema(description = "Thời điểm hết hạn của token", example = "2026-10-20T08:15:00Z")
     private final Instant expiresAt;
 
-    @Schema(description = "Thông tin tài khoản đã xác thực")
-    private final UserSummary user;
+//    @Schema(description = "Thông tin tài khoản đã xác thực")
+//    private final UserSummary user;
 
-    public LoginResponse(String accessToken, String tokenType, Instant expiresAt, UserSummary user) {
+    public LoginResponse(String accessToken, String tokenType, Instant expiresAt) {
         this.accessToken = accessToken;
         this.tokenType = tokenType;
         this.expiresAt = expiresAt;
-        this.user = user;
+        //this.user = user;
     }
 
     public String getAccessToken() {
@@ -37,8 +37,8 @@ public class LoginResponse {
     public Instant getExpiresAt() {
         return expiresAt;
     }
-
-    public UserSummary getUser() {
-        return user;
-    }
+//
+//    public UserSummary getUser() {
+//        return user;
+//    }
 }
