@@ -1,0 +1,12 @@
+package com.example.order.enums;
+
+public enum OrderStatus {
+    PENDING_RESERVATION,
+    AWAITING_PAYMENT,
+    CONFIRMED,
+    CANCELLED,
+    RESERVATION_FAILED,
+    CANCELLATION_PENDING,
+    RESERVATION_EXPIRED,
+    RECONCILIATION_REQUIRED
+}

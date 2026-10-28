@@ -132,6 +132,19 @@ public class SecurityConfig {
                                 "/api/v1/inventory-items/**"
                         ).hasRole("ADMIN")
 
+                        // Orders: USER and ADMIN can create, read, and cancel orders
+                        .pathMatchers(
+                                HttpMethod.POST,
+                                "/api/v1/orders",
+                                "/api/v1/orders/*/cancellation"
+                        ).hasAnyRole("USER", "ADMIN")
+
+                        .pathMatchers(
+                                HttpMethod.GET,
+                                "/api/v1/orders",
+                                "/api/v1/orders/**"
+                        ).hasAnyRole("USER", "ADMIN")
+
                         // Fail closed for unknown endpoints
                         .anyExchange().denyAll()
                 )
