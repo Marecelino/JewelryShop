@@ -1,0 +1,3 @@
+## 2024-10-31 - [Resolving N+1 in Spring Data JPA Pagination]
+**Learning:** Using `@EntityGraph` with `Page<T>` in Spring Data JPA to solve N+1 problems causes a hidden performance bottleneck: it triggers in-memory pagination (WARN: HHH000104) because Hibernate cannot safely apply database-level limits/offsets when fetching one-to-many collections via JOIN.
+**Action:** When returning a `Page<T>` of entities with lazily-loaded collections, do not use `@EntityGraph`. Instead, annotate the collection in the Entity with Hibernate's `@BatchSize(size = 50)`. This allows the main query to paginate safely at the database level, and lazily fetches the collections for the current page in O(1) batched queries instead of O(N).
