@@ -3,6 +3,8 @@ package com.example.order.entity;
 import com.example.order.enums.OrderStatus;
 import jakarta.persistence.*;
 
+import org.hibernate.annotations.BatchSize;
+
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -39,6 +41,11 @@ public class Order {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
+    // ⚡ Bolt Optimization: @BatchSize(size = 50) resolves the N+1 query problem during Order pagination
+    // (e.g., in OrderService.listOrders). Spring Data JPA pagination does not support @EntityGraph
+    // safely because it triggers in-memory pagination (WARN: HHH000104). @BatchSize allows lazy
+    // loading of items for a page of orders in O(1) batched queries instead of O(N).
+    @BatchSize(size = 50)
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<OrderItem> items = new ArrayList<>();
 
