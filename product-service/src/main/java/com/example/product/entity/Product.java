@@ -5,7 +5,11 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "Products", schema = "dbo")
+@Table(name = "Products", schema = "dbo", indexes = {
+    // ⚡ Bolt: Adding an index for the category column since products are frequently filtered by category.
+    // Impact: Improves read latency for searchByCategory requests, converting a potential full table scan into an index seek.
+    @Index(name = "idx_product_category", columnList = "Category")
+})
 public class Product {
 
     @Id
