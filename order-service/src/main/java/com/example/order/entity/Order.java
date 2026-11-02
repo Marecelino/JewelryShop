@@ -2,6 +2,7 @@ package com.example.order.entity;
 
 import com.example.order.enums.OrderStatus;
 import jakarta.persistence.*;
+import org.hibernate.annotations.BatchSize;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -39,7 +40,10 @@ public class Order {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
+    // Resolves N+1 query problems during Spring Data JPA pagination (Page<T>) for OneToMany relationships
+    // using Hibernate's @BatchSize annotation rather than @EntityGraph to avoid triggering inefficient in-memory pagination.
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @BatchSize(size = 50)
     private List<OrderItem> items = new ArrayList<>();
 
     public Order() {
