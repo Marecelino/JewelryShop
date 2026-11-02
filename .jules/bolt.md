@@ -1,0 +1,3 @@
+## 2026-10-23 - Early return in auth check
+**Learning:** Found a common pattern in the login service where BCrypt hashing was performed on passwords before checking if the user account was enabled or disabled. BCrypt is computationally expensive by design (takes ~100-300ms depending on rounds), so performing it when we already know the account is disabled and we will reject the login anyway is a waste of CPU cycles. This is an easy target for an early return.
+**Action:** Reorder the boolean checks: verify user state *before* invoking `passwordEncoder.matches`. This follows the principle of "fail fast" and saves significant processing time for disabled accounts attempting to log in.
