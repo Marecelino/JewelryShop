@@ -39,7 +39,11 @@ public class Order {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
+    // Optimization: Use @BatchSize instead of @EntityGraph for paginated queries (Page<Order>)
+    // to avoid in-memory pagination warnings while still resolving N+1 query problems
+    // when mapping the paginated Order entities to their DTO responses.
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @org.hibernate.annotations.BatchSize(size = 100)
     private List<OrderItem> items = new ArrayList<>();
 
     public Order() {
