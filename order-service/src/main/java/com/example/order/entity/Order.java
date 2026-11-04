@@ -39,6 +39,10 @@ public class Order {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
+    // ⚡ Bolt Optimization: Added @BatchSize to prevent N+1 queries during pagination.
+    // Using @EntityGraph with Page<T> causes Hibernate to fetch all records into memory first,
+    // which is a severe bottleneck. @BatchSize fetches children efficiently in chunks instead.
+    @org.hibernate.annotations.BatchSize(size = 50)
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<OrderItem> items = new ArrayList<>();
 
