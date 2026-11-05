@@ -4,6 +4,7 @@ import com.example.order.enums.OrderStatus;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import org.hibernate.annotations.BatchSize;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,10 @@ public class Order {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
+    // ⚡ Bolt Optimization: Using @BatchSize(size = 20) instead of @EntityGraph for the paginated endpoints.
+    // This prevents Hibernate's fallback to in-memory pagination (which happens when paginating a collection join)
+    // while still solving the N+1 query problem by batch-fetching the order items.
+    @BatchSize(size = 20)
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<OrderItem> items = new ArrayList<>();
 
