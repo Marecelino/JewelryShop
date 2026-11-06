@@ -41,7 +41,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     Page<Order> findByStatus(OrderStatus status, Pageable pageable);
 
-    @EntityGraph(attributePaths = {"items"})
+    // Performance optimization: Removed @EntityGraph to avoid HHH000104 in-memory pagination.
+    // We now rely on @BatchSize in the Order entity for efficient collection fetching.
     @Query("SELECT o FROM Order o WHERE o.status IN :statuses ORDER BY o.updatedAt ASC")
     List<Order> findByStatusInWithItems(@Param("statuses") Collection<OrderStatus> statuses, Pageable pageable);
 }

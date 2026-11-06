@@ -39,6 +39,9 @@ public class Order {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
+    // Performance optimization: Batch size resolves N+1 query problem during Order Response mapping
+    // without triggering HHH000104 in-memory pagination warnings for pageable queries.
+    @org.hibernate.annotations.BatchSize(size = 100)
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<OrderItem> items = new ArrayList<>();
 
