@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import org.hibernate.annotations.BatchSize;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +41,10 @@ public class Order {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
+    // ⚡ Bolt Performance Optimization:
+    // Uses @BatchSize(size = 50) to prevent N+1 queries during Spring Data JPA pagination (Page<T>)
+    // for this OneToMany relationship, avoiding inefficient in-memory pagination that happens with @EntityGraph.
+    @BatchSize(size = 50)
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<OrderItem> items = new ArrayList<>();
 
