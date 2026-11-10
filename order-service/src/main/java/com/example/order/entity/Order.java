@@ -2,6 +2,7 @@ package com.example.order.entity;
 
 import com.example.order.enums.OrderStatus;
 import jakarta.persistence.*;
+import org.hibernate.annotations.BatchSize;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -39,6 +40,9 @@ public class Order {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
+    // ⚡ Bolt: Resolves N+1 queries during pagination by fetching OrderItems in batches,
+    // avoiding the in-memory pagination penalty of @EntityGraph on Page<Order> queries.
+    @BatchSize(size = 50)
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<OrderItem> items = new ArrayList<>();
 
